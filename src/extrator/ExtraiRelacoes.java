@@ -5,6 +5,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.Point;
 
+/*
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+*/
 
 public class ExtraiRelacoes {
 	String VERB = "(v-fin |v-inf |v-pcp |v-ger )";
@@ -29,7 +35,10 @@ public class ExtraiRelacoes {
 
 	String CHUNK = "B-NP (I-NP )*(B-PP B-NP (I-NP )*)*";
 	
-	public void parse(String[][] vetor) {
+//	private static final String path = "acessorios/saida.txt";
+//	private BufferedWriter writer;
+	
+	public void parse(String[][] vetor){
 		// SET ITERATORS
 		Vector<Integer> posTag = new Vector<>();
 		Vector<Integer> chunkTag = new Vector<>();
@@ -112,6 +121,29 @@ public class ExtraiRelacoes {
 			//			System.out.println(arg1);
 
 					}
+					if (arg1.equals(" que") || arg1.equals(" se")){
+			//			arg1="";
+				//		System.out.println("aqui1");
+						for(int j=chunkIndexes.x; j <= chunkIndexes.y ; j++){
+							if (j>0){
+								if(vetor[2][j-1].equals("B-NP")){
+									arg1 = vetor[0][j-1]+" "+vetor[0][j];
+							//		System.out.println("aqui1");
+								}
+								else if(vetor[2][j-1].equals("I-NP")){
+									if(vetor[2][j-2].equals("B-NP") || vetor[2][j-2].equals("I-NP"))
+										arg1 = vetor[0][j-2]+" "+vetor[0][j-1]+" "+vetor[0][j];
+								}
+
+								else {
+									arg1 = vetor[0][j];
+								}
+							}
+							
+						}
+						
+					}
+					
 					
 
 					// PRINT THE RELATION
@@ -147,10 +179,27 @@ public class ExtraiRelacoes {
 					if (!(arg1.equals(" null")) && !(arg2.equals(" null")) && !(arg1.equals(" .null")) && !(arg2.equals(" .null") )){
 						System.out.println("Arg1: "+arg1+" | Rel: "+rel+" | Arg2: "+arg2);
 					}
+		/*			try{
+						File file = new File(path);
+						writer = new BufferedWriter(new FileWriter(file));
+						writer.write("Arg1: "+arg1+" | Rel: "+rel+" | Arg2: "+arg2);
+						writer.newLine();
+
+					} catch(IOException e){
+						
+					}
+					*/
 
 			//		System.out.println();
 				}
 				System.out.println();
+	
+		/*		try{
+					writer.flush();
+					writer.close();
+				}catch(IOException e){
+					
+				}*/
 			}
 	
 	
