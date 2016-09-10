@@ -149,6 +149,9 @@ public class ExtraiRelacoes {
 					// PRINT THE RELATION
 					for(int j=i.x; j <= i.y ; j++){		
 						rel = rel+" "+vetor[0][j];
+						if ((j>0) && ((vetor[0][j-1].equals("não")))){
+							arg1 = arg1 +" não ";
+						}
 
 					}
 
